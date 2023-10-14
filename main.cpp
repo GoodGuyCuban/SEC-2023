@@ -86,13 +86,23 @@ int schedule(vector<int> arvCities, vector<int> depCities, vector<int> departure
 
     for (int flight = 0; flight < arvCities.size(); flight++) // For loop for looping over flights
     {
+        // Converting a city number into a mock travel time
+        int travelTime = depCities[flight] / 3;
+
+        if (departureTimes[flight] + travelTime > 1440)
+        {
+            cout << "Flight #" << flight << " must be booked for arrival on the next day\n";
+            continue;
+        }
+
         for (int gate = 0; gate < Gates.size(); gate++) // For loop for looping over the gates
         {
+
             bool breakOut = false;
             if (arvCities[flight] == 1) // Checking if the flight is arriving
             {
                 bool edited = false;
-                for (int time = departureTimes[flight]; time < min(departureTimes[flight] + processingTime, 1439); time++)
+                for (int time = departureTimes[flight] + travelTime; time < min(departureTimes[flight] + travelTime + processingTime, 1439); time++)
                 {
                     if (Gates[gate].time_slots[time])
                         breakOut = true;
@@ -102,7 +112,7 @@ int schedule(vector<int> arvCities, vector<int> depCities, vector<int> departure
                     continue;
 
                 edited = true;
-                for (int time = departureTimes[flight]; time < min(departureTimes[flight] + processingTime, 1439); time++)
+                for (int time = departureTimes[flight] + travelTime; time < min(departureTimes[flight] + travelTime + processingTime, 1439); time++)
                 {
                     Gates[gate].time_slots[time] = 1;
                 }
