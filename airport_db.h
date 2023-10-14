@@ -1,16 +1,17 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
+#include <vector>
 
 using namespace std;
 
 class Gate
 {
-private:
-    bool fully_booked = false;
 
 public:
     int time_slots[1440];
+    bool fully_booked = false;
+    bool partially_booked = false;
 };
 
-int schedule(int arvCities[], int depCities[], int departureTimes[], int totalGates);
+int schedule(vector<int> arvCities, vector<int> depCities, vector<int> departureTimes, int processingTime);
