@@ -63,11 +63,8 @@ vector<pair<string, vector<int>>> parseCSVcolumn(string filename)
 int main()
 {
     Gate test;
-    for (int i = 0; i < 1440; i++)
-        cout << test.time_slots[i];
-
     vector<pair<string, vector<int>>> data = parseCSVcolumn("data.csv");
-    cout << schedule((data[1]).second, data[0].second, data[2].second, 45);
+    cout << "total gates: " << schedule((data[1]).second, data[0].second, data[2].second, 45);
 
     return 0;
 }
@@ -87,19 +84,19 @@ int schedule(vector<int> arvCities, vector<int> depCities, vector<int> departure
 
     for (int flight = 0; flight < arvCities.size(); flight++) // For loop for looping over flights
     {
-
+        cout << flight << "\n";
         for (int gate = 0; gate < Gates.size(); gate++) // For loop for looping over the gates
         {
 
             if (arvCities[flight] == 1) // Checking if the flight is arriving
             {
-                for (int time = departureTimes[flight]; time < max(departureTimes[flight] + processingTime, 1440); time++)
+                for (int time = departureTimes[flight]; time < min(departureTimes[flight] + processingTime, 1439); time++)
                 {
                     if (Gates[gate].time_slots[time])
                         continue;
                 }
 
-                for (int time = departureTimes[flight]; time < max(departureTimes[flight] + processingTime, 1440); time++)
+                for (int time = departureTimes[flight]; time < min(departureTimes[flight] + processingTime, 1439); time++)
                 {
                     Gates[gate].time_slots[time] = 1;
                 }
@@ -109,13 +106,13 @@ int schedule(vector<int> arvCities, vector<int> depCities, vector<int> departure
 
             else if (depCities[flight] == 1)
             {
-                for (int time = min(departureTimes[flight] - processingTime, 0); time < departureTimes[flight]; time++)
+                for (int time = max(departureTimes[flight] - processingTime, 0); time < departureTimes[flight]; time++)
                 {
                     if (Gates[gate].time_slots[time])
                         continue;
                 }
 
-                for (int time = min(departureTimes[flight] - processingTime, 0); time < departureTimes[flight]; time++)
+                for (int time = max(departureTimes[flight] - processingTime, 0); time < departureTimes[flight]; time++)
                 {
                     Gates[gate].time_slots[time] = 1;
                 }
@@ -127,11 +124,12 @@ int schedule(vector<int> arvCities, vector<int> depCities, vector<int> departure
             {
                 cout << "Incorrectly Registered Flight, #" << flight;
             }
-
-            if (Gates[gate].partially_booked)
-                totalGates += 1;
         }
     }
+
+    for (int i = 0; i < Gates.size(); i++)
+        if (Gates[i].partially_booked)
+            totalGates += 1;
 
     return totalGates;
 }
