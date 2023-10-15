@@ -14,4 +14,4 @@ public:
     bool partially_booked = false;
 };
 
-int schedule(vector<int> arvCities, vector<int> depCities, vector<int> departureTimes, int processingTime);
+vector<Gate> schedule(vector<int> arvCities, vector<int> depCities, vector<int> departureTimes, int processingTime);

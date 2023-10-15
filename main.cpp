@@ -14,19 +14,19 @@ vector<pair<string, vector<int>>> parseCSVcolumn(string filename)
 {
     ifstream file(filename);
 
-    if (!file.is_open())
+    if (!file.is_open()) // check if file is open
     {
         cout << "File not found" << endl;
         exit(0);
     }
 
-    vector<pair<string, vector<int>>> parsedColumn;
+    vector<pair<string, vector<int>>> parsedColumn; // initialize return vector
 
-    string line;
+    string line; // initialize variables
     string colname;
     int val;
 
-    if (file.good())
+    if (file.good()) // check if file is good
     {
         getline(file, line);
         stringstream s(line);
@@ -38,13 +38,13 @@ vector<pair<string, vector<int>>> parseCSVcolumn(string filename)
         }
     }
 
-    while (getline(file, line))
+    while (getline(file, line)) // read data, line by line
     {
         stringstream s(line);
 
         int i = 0;
 
-        while (s >> val)
+        while (s >> val) // read each row
         {
             parsedColumn.at(i).second.push_back(val);
 
@@ -62,16 +62,19 @@ vector<pair<string, vector<int>>> parseCSVcolumn(string filename)
 
 int main()
 {
-    Gate test;
-    vector<pair<string, vector<int>>> data = parseCSVcolumn("data.csv");
-    int totalGates = schedule((data[1]).second, data[0].second, data[2].second, 45);
-
-    cout << "Total Gates: " << totalGates;
+    int input;
+    vector<pair<string, vector<int>>> data;
+    cin >> "5000 (type 1) or 50000 (type 2): " >> input;
+    if (input == 1)
+        data = parseCSVcolumn("data_5000.csv");
+    if (input == 2)
+        data = parseCSVcolumn("dataBig.csv");
+    vector<Gate> gates = schedule((data[1]).second, data[0].second, data[2].second, 45);
 
     return 0;
 }
 
-int schedule(vector<int> arvCities, vector<int> depCities, vector<int> departureTimes, int processingTime)
+vector<Gate> schedule(vector<int> arvCities, vector<int> depCities, vector<int> departureTimes, int processingTime)
 {
     vector<Gate> Gates;
     Gates.resize(arvCities.size());
@@ -165,5 +168,6 @@ int schedule(vector<int> arvCities, vector<int> depCities, vector<int> departure
             totalGates += 1;
         }
 
-    return totalGates;
+    cout << "Total Gates: " << totalGates;
+    return Gates;
 }
