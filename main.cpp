@@ -64,7 +64,8 @@ int main()
 {
     int input;
     vector<pair<string, vector<int>>> data;
-    cin >> "5000 (type 1) or 50000 (type 2): " >> input;
+    cout << "5000 (type 1) or 50000 (type 2): ";
+    cin >> input;
     if (input == 1)
         data = parseCSVcolumn("data_5000.csv");
     if (input == 2)
@@ -168,6 +169,6 @@ vector<Gate> schedule(vector<int> arvCities, vector<int> depCities, vector<int> 
             totalGates += 1;
         }
 
-    cout << "Total Gates: " << totalGates;
+    cout << "Total Gates: " << totalGates << endl;
     return Gates;
 }
